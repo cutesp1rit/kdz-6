@@ -1,58 +1,65 @@
-﻿namespace LibraryShop;
-using System.Runtime.Serialization.Json; 
-using System.Runtime.Serialization; 
+﻿using System.Text.Json.Serialization;
+namespace LibraryShop;
 
-[DataContract]
+[Serializable]
 public class Product
 {
-    [DataMember]
     private string widgetId;
-    [DataMember]
     private string name;
-    [DataMember]
     private int quantity;
-    [DataMember]
     private double price;
-    [DataMember]
     private bool isAvailable; 
-    [DataMember]
     private string manufactureDate;
-    [DataMember]
     private ProductAddInf[] specifications;
 
-    public string WidgetId => widgetId;
+    [JsonPropertyName("widgetId")]
+    public string WidgetId 
+    {
+        get => widgetId;
+        init => widgetId = value;
+    }
 
+    [JsonPropertyName("name")]
     public string Name
     {
         get => name;
         set => name = value;
     }
 
+    [JsonPropertyName("quantity")]
     public int Quantity
     {
         get => quantity;
         set => quantity = value;
     }
 
+    [JsonPropertyName("price")]
     public double Price
     {
         get => price;
         set => price = value;
     }
-
+    
+    [JsonPropertyName("isAvailable")]
     public bool IsAvailable
     {
         get => isAvailable;
         set => isAvailable = value;
     }
 
+    [JsonPropertyName("manufactureDate")]
     public string ManufactureDate
     {
         get => manufactureDate;
         set => manufactureDate = value;
     }
     
-    public ProductAddInf[] Specifications => specifications;
+    [JsonPropertyName("specifications")]
+    public ProductAddInf[] Specifications
+    {
+        get => specifications;
+        init => specifications = value;
+    }
 
     public Product(string widgetId, string name, int quantity, double price,
         bool isAvailable, string manufactureDate, ProductAddInf[] specifications)
@@ -104,7 +111,11 @@ public class Product
     }
 
     public string TOJSON()
-    { 
-        return "";
+    {
+        return $"{{\n    \"widgetId\": \"{WidgetId}\",\n" +
+               $"    \"name\": \"{Name}\",\n    \"quantity\": {Quantity},\n    \"price\": {Price},\n" +
+               $"    \"isAvailable\": {IsAvailable},\n    \"manufactureDate\": \"{ManufactureDate}\",\n" +
+               $"    \"specifications\": [\n      {{\n        \"specName\": \"Dimensionality\",\n " +
+               $"       \"specPrice\": 11.18,\n        \"isCustom\": true\n      }},\n      {{\n        \"specName\": \"Weight Distribution\",\n        \"specPrice\": 23.24,\n        \"isCustom\": false\n      }}\n    ]\n  }}";
     }
 }

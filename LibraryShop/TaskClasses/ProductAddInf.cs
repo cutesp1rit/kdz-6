@@ -1,29 +1,30 @@
+using System.Text;
+using System.Text.Json.Serialization;
 namespace LibraryShop;
-using System.Runtime.Serialization.Json; 
-using System.Runtime.Serialization; 
+
 // Product Additional Information
-[DataContract]
+[Serializable]
 public class ProductAddInf
 {
-    [DataMember]
     private string specName;
-    [DataMember]
     private double specPrice;
-    [DataMember]
     private bool isCustom;
     
+    [JsonPropertyName("specName")]
     public string SpecName
     {
         get => specName;
         set => specName = value;
     }
 
+    [JsonPropertyName("specPrice")]
     public double SpecPrice
     {
         get => specPrice;
         set => specPrice = value;
     }
 
+    [JsonPropertyName("isCustom")]
     public bool IsCustom
     {
         get => isCustom;
@@ -47,5 +48,11 @@ public class ProductAddInf
     public override string ToString()
     {
         return $"specName: {SpecName}, specPrice: {SpecPrice}, isCustom: {IsCustom}";
+    }
+
+    public string ToJSON()
+    {
+        StringBuilder allObjects;
+        return "";
     }
 }
