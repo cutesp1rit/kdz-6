@@ -12,18 +12,21 @@ internal class Program
         {
             Menu switchMain = new Menu(new[] {"\t1. Передать путь к файлу для считывания и записи данных", 
                 "\t2. Отсортировать коллекцию объектов по одному из полей", "\t3. " +
-                "Выбрать объект и отредактировать в нем выбранное поле", "\t4. Завершить работу программы"},
-                "Чтобы вы хотели сделать?");
+                "Выбрать объект и отредактировать в нем выбранное поле", "\t4. Вывести текущие объекты в консоль", 
+                "\t5. Завершить работу программы"}, "Чтобы вы хотели сделать?");
             switch (switchMain.ShowMenu())
             {
                 case 1:
                     MethodsForMenuMessages.GettingPath(ref products);
                     break;
                 case 2:
+                    MethodsForMenuMessages.PreparationForSorting(ref products);
                     break;
                 case 3:
                     break;
                 case 4:
+                    break;
+                case 5:
                     mainFlag = false;
                     break;
                 default:

@@ -75,7 +75,27 @@ public class Product
         isAvailable = false;
         manufactureDate = "";
         specifications = new ProductAddInf[0];
-    } 
+    }
+
+    public string WhatIsFieldString(string field)
+    {
+        if (field == "widgetId")
+        {
+            return WidgetId;
+        }
+        
+        if (field == "name")
+        {
+            return Name;
+        }
+        
+        if (field == "manufactureDate")
+        {
+            return ManufactureDate;
+        }
+
+        return "";
+    }
     
     public string TOJSON()
     { 

@@ -77,6 +77,35 @@ public static class MethodsForMenuMessages
             }
         } while (flagPath);
     }
-    
-    
+
+    public static void PreparationForSorting(ref AllProducts products)
+    {
+        Menu switchMethod = new Menu(new[]
+            {
+                "\t1. widgetId", "\t2. name", "\t3. quantity", 
+                "\t4. price", "\t5. isAvailable", "\t6. manufactureDate"
+            },
+            "По какому полю вы бы хотели произвести сортировку?");
+        switch (switchMethod.ShowMenu())
+        {
+            case 1:
+                products.SortForString("widgetId");
+                break;
+            case 2:
+                products.SortForString("name");
+                break;
+            case 3:
+                products.SortForQuantity();
+                break;
+            case 4:
+                products.SortForPrice();
+                break;
+            case 5:
+                products.SortForIsAvailable();
+                break;
+            case 6:
+                products.SortForString("manufactureDate");
+                break;
+        }
+    }
 }
