@@ -43,4 +43,9 @@ public class ProductAddInf
         specPrice = 0;
         isCustom = false;
     }
+
+    public override string ToString()
+    {
+        return $"specName: {SpecName}, specPrice: {SpecPrice}, isCustom: {IsCustom}";
+    }
 }

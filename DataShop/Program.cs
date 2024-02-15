@@ -7,6 +7,7 @@ internal class Program
     public static void Main(string[] args)
     {
         AllProducts products = new AllProducts();
+        MethodsForMenuMessages.GettingPath(ref products);
         bool mainFlag = true;
         do
         {
@@ -23,14 +24,16 @@ internal class Program
                     MethodsForMenuMessages.PreparationForSorting(ref products);
                     break;
                 case 3:
+                    MethodsForMenuMessages.PreparationForChanges(ref products);
                     break;
                 case 4:
+                    MethodsForMenuMessages.PrintProducts(products);
                     break;
                 case 5:
                     mainFlag = false;
                     break;
                 default:
-                    Console.WriteLine("Введенное значение может быть от 1 до 4, как выбор пункта для запуска действия, повторите попытку.");
+                    Console.WriteLine("Введенное значение может быть от 1 до 5, как выбор пункта для запуска действия, повторите попытку.");
                     break;
             }
         } while (mainFlag);

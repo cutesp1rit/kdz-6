@@ -14,6 +14,47 @@ public static class MethodsForMenuMessages
         }
         return newString;
     }
+    /// <summary>
+    /// Метод для получения неотрицательного целого значения
+    /// </summary>
+    /// <returns></returns>
+    public static int GetPosInt()
+    {
+        int newInt;
+        while (!int.TryParse(Console.ReadLine(), out newInt) || newInt<0)
+        {
+            Console.WriteLine("Некорретные данные! Введите целое неотрицательное значение:");
+        }
+        return newInt;
+    }
+    /// <summary>
+    /// Метод для получения неотрицательного числа типа double
+    /// </summary>
+    /// <returns></returns>
+    public static double GetPosDouble()
+    {
+        double newDouble;
+        while (!double.TryParse(Console.ReadLine(), out newDouble) || newDouble<0)
+        {
+            Console.WriteLine("Некорретные данные! Введите неотрицательное значение:");
+        }
+        return newDouble;
+    }
+    
+    public static bool GetBoolValue()
+    {
+        string newBool = Console.ReadLine();
+        while (newBool != "true" &&  newBool != "false")
+        {
+            Console.WriteLine("Вы можете ввести только два значения: \"true\" или \"false\"");
+            newBool = Console.ReadLine();
+        }
+        if (newBool == "true")
+        {
+            return true;    
+        }
+        return false;
+    }
     
     public static void GettingPath(ref AllProducts products)
     {
@@ -105,6 +146,89 @@ public static class MethodsForMenuMessages
                 break;
             case 6:
                 products.SortForString("manufactureDate");
+                break;
+        }
+        Console.WriteLine("Сортировка прошла успешно. Полученный результат: ");
+        PrintProducts(products);
+    }
+
+    public static void PrintProducts(AllProducts products)
+    {
+        foreach (Product product in products.Products)
+        {
+            Console.WriteLine(product);
+        }
+        Console.WriteLine("Для возвращения к меню нажмите любую кнопку.");
+        Console.ReadLine();
+    }
+    public static void PreparationForChanges(ref AllProducts products)
+    {
+        string[] arrayObjectForSwitch = new string[products.Products.Count];
+        for (int i = 0; i < products.Products.Count; i++)
+        {
+            arrayObjectForSwitch[i] = $"\t{i + 1}. " + products.Products[i];
+        }
+        Menu switchMethod = new Menu(arrayObjectForSwitch, "Какой объект вы бы хотели отредактировать?");
+        int indexOfObject = switchMethod.ShowMenu() - 1;
+        Menu switchMethod2 = new Menu(new[]
+            {
+                "\t1. name", "\t2. quantity", 
+                "\t3. price", "\t4. isAvailable", "\t5. manufactureDate",
+                "\t6. specifications"
+            }, "Какое поле вы бы хотели изменить?");
+        switch (switchMethod2.ShowMenu())
+        {
+            case 1:
+                Console.WriteLine($"Текущее значение: {products.Products[indexOfObject].Name}. Введите новое:");
+                products.Products[indexOfObject].Name = GetNotEmptyString();
+                break;
+            case 2:
+                Console.WriteLine($"Текущее значение: {products.Products[indexOfObject].Quantity}. Введите новое:");
+                products.Products[indexOfObject].Quantity = GetPosInt();
+                break;
+            case 3:
+                Console.WriteLine($"Текущее значение: {products.Products[indexOfObject].Price}. Введите новое:");
+                products.Products[indexOfObject].Price = GetPosDouble();
+                break;
+            case 4:
+                Console.WriteLine($"Текущее значение: {products.Products[indexOfObject].IsAvailable}. Введите новое:");
+                products.Products[indexOfObject].IsAvailable = GetBoolValue();
+                break;
+            case 5:
+                Console.WriteLine($"Текущее значение: {products.Products[indexOfObject].ManufactureDate}. Введите новое:");
+                products.Products[indexOfObject].ManufactureDate = GetNotEmptyString();
+                break;
+            case 6:
+                Product thisProduct = products.Products[indexOfObject];
+                ChangeAddInf(ref thisProduct);
+                products.Products[indexOfObject] = thisProduct;
+                break;
+        }
+    }
+
+    public static void ChangeAddInf(ref Product product)
+    {
+        Console.WriteLine("Это массив вложенных объектов, поэтому вам нужно будет еще раз выбрать объект и поле:");
+        string[] arrayObjectForSwitch = new string[product.Specifications.Length];
+        for (int i = 0; i < product.Specifications.Length; i++)
+        {
+            arrayObjectForSwitch[i] = $"\t{i + 1}. " + product.Specifications[i];
+        }
+        Menu switchMethod = new Menu(arrayObjectForSwitch, "Какой объект вы бы хотели отредактировать?");
+        int indexOfObject = switchMethod.ShowMenu() - 1;
+        Menu switchMethod2 = new Menu(new[]
+        {
+            "\t6.1 specifications: specName", "\t6.2. specifications: isCustom"
+        }, "Какое поле вы бы хотели изменить?");
+        switch (switchMethod2.ShowMenu())
+        {
+            case 1:
+                Console.WriteLine($"Текущее значение: {product.Specifications[indexOfObject].SpecName}. Введите новое:");
+                product.Specifications[indexOfObject].SpecName = GetNotEmptyString();
+                break;
+            case 2:
+                Console.WriteLine($"Текущее значение: {product.Specifications[indexOfObject].IsCustom}. Введите новое:");
+                product.Specifications[indexOfObject].IsCustom = GetBoolValue();
                 break;
         }
     }

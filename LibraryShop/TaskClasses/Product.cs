@@ -96,7 +96,13 @@ public class Product
 
         return "";
     }
-    
+
+    public override string ToString()
+    {
+        return $"widgetId: {WidgetId}, name: {Name}, quantity: {Quantity}, price: {Price}, " +
+               $"isAvailable: {IsAvailable}, ManufactureDate: {ManufactureDate}..";
+    }
+
     public string TOJSON()
     { 
         return "";
