@@ -7,6 +7,18 @@ public class AutoSaver
     private DateTime oldData;
     private List<Product> _products;
     
+    public AutoSaver(List<Product> products)
+    {
+        _products = products;
+        oldData = new DateTime();
+    }
+
+    public AutoSaver()
+    {
+        _products = new List<Product>();
+        oldData = new DateTime();
+    }
+    
     public void WhenItChanged(object sender, DataEventArgs args)
     {
         if (oldData == new DateTime()) // если старое значение еще не задано
@@ -15,10 +27,9 @@ public class AutoSaver
             return;
         }
 
-        TimeSpan diff = args.DataNewChanged - oldData;
         if ((args.DataNewChanged - oldData).TotalSeconds <= 15)
         {
-            WorkJson.JsonSerialization(_products);
+            WorkJson.JsonSerialization(_products, ".\\Products_tmp.json");
         }
     }
 }

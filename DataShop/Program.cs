@@ -4,6 +4,7 @@ using LibraryShop.StyleConsole;
 
 internal class Program
 {
+    // Мой путь: .\3V.json
     public static void Main(string[] args)
     {
         AllProducts products = new AllProducts();

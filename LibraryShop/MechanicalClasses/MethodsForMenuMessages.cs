@@ -34,7 +34,7 @@ public static class MethodsForMenuMessages
     public static double GetPosDouble()
     {
         double newDouble;
-        while (!double.TryParse(Console.ReadLine(), out newDouble) || newDouble<=0)
+        while (!double.TryParse(Console.ReadLine(), out newDouble) || newDouble<0)
         {
             Console.WriteLine("Некорретные данные! Введите положительное вещественное значение:");
         }
@@ -62,8 +62,7 @@ public static class MethodsForMenuMessages
         do
         {
             Console.WriteLine("Введите путь, который собираетесь использовать в дальнейшем: ");
-            Console.ReadLine();
-            string path = ".\\3V.json"; // GetNotEmptyString();
+            string path = GetNotEmptyString();
             Menu switchMethod = new Menu(new[]
                 {
                     "\t1. Получить данные по этому пути", 
@@ -86,7 +85,7 @@ public static class MethodsForMenuMessages
                         }
                         else
                         {
-                            // Здесь должен быть метод для сериализации данных    
+                            WorkJson.JsonSerialization(products.Products, path);  
                         }
                         break;
                 }

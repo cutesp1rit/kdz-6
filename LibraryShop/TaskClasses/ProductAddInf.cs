@@ -10,7 +10,7 @@ public class ProductAddInf
     private string specName;
     private double specPrice;
     private bool isCustom;
-    public event EventHandler<DataEventArgs> SomethingChanged;
+    public event EventHandler<DataEventArgs> Update;
     
     [JsonPropertyName("specName")]
     public string SpecName
@@ -19,7 +19,7 @@ public class ProductAddInf
         set
         {
             specName = value;
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }
     }
 
@@ -31,7 +31,7 @@ public class ProductAddInf
         {
             specPrice = value;
             SpecificationsPriceChanged?.Invoke(this, new ProductEventArgs(specPrice));    
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }
     }
     
@@ -42,7 +42,7 @@ public class ProductAddInf
         set
         {
             isCustom = value;
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }
     }
     

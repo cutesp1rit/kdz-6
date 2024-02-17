@@ -8,4 +8,9 @@ public class ProductEventArgs : EventArgs
     {
         NewPrice = price;
     }
+
+    public ProductEventArgs()
+    {
+        NewPrice = 0;
+    }
 }

@@ -12,7 +12,7 @@ public class Product
     private bool isAvailable; 
     private string manufactureDate;
     private ProductAddInf[] specifications;
-    public event EventHandler<DataEventArgs> SomethingChanged;
+    public event EventHandler<DataEventArgs> Update;
 
     [JsonPropertyName("widgetId")]
     public string WidgetId 
@@ -28,7 +28,7 @@ public class Product
         set 
         {
             name = value;
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }
     }
 
@@ -39,7 +39,7 @@ public class Product
         set
         {
             quantity = value;
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }
     }
 
@@ -57,7 +57,7 @@ public class Product
         set 
         { 
             isAvailable = value;
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }    
     }
 
@@ -68,7 +68,7 @@ public class Product
         set
         {
             manufactureDate = value;
-            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
         }
     }
     

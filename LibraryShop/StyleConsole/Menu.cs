@@ -11,6 +11,12 @@ public class Menu
         _quastion = quastion;
     }
 
+    public Menu()
+    {
+        _arrayCases = new string[0];
+        _quastion = "";
+    }
+
     /// <summary>
     /// возвращает пункт выбранного меню
     /// </summary>

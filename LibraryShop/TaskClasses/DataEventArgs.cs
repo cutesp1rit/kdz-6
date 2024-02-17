@@ -8,4 +8,9 @@ public class DataEventArgs : EventArgs
     {
         DataNewChanged = newChanges;
     }
+
+    public DataEventArgs()
+    {
+        DataNewChanged = new DateTime();
+    }
 }
