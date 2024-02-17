@@ -31,10 +31,25 @@ public static class WorkJson
         {
             throw new FormatException("Ошибка! Файл пуст!");
         }
+        
+        AutoSaver tracking = new AutoSaver();
+        // теперь нужно подписать методы на события, чтобы при изменении цены спецификации срабатывало событие..
+        foreach (Product product in products)
+        {
+            foreach (var specProduct in product.Specifications)
+            {
+                specProduct.SpecificationsPriceChanged += product.ThisProductSpecificationsPriceChanged;
+                specProduct.SomethingChanged += specProduct.OnSomethingChanged;
+                specProduct.SomethingChanged += tracking.WhenItChanged;
+            }
+            
+            product.SomethingChanged += product.OnSomethingChanged;
+            product.SomethingChanged += tracking.WhenItChanged;
+        }
         return products;
     }
 
-    public static void JsonSerialization(string path)
+    public static void JsonSerialization(List<Product> products)
     {
         
     }

@@ -6,31 +6,55 @@ namespace LibraryShop;
 [Serializable]
 public class ProductAddInf
 {
+    public event EventHandler<ProductEventArgs> SpecificationsPriceChanged;
     private string specName;
     private double specPrice;
     private bool isCustom;
+    public event EventHandler<DataEventArgs> SomethingChanged;
     
     [JsonPropertyName("specName")]
     public string SpecName
     {
         get => specName;
-        set => specName = value;
+        set
+        {
+            specName = value;
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }
     }
 
     [JsonPropertyName("specPrice")]
     public double SpecPrice
     {
         get => specPrice;
-        set => specPrice = value;
+        set
+        {
+            specPrice = value;
+            SpecificationsPriceChanged?.Invoke(this, new ProductEventArgs(specPrice));    
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }
     }
-
+    
     [JsonPropertyName("isCustom")]
     public bool IsCustom
     {
         get => isCustom;
-        set => isCustom = value;
+        set
+        {
+            isCustom = value;
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }
     }
-
+    
+    public virtual void OnSomethingChanged(object sender, DataEventArgs args)
+    {
+        Console.WriteLine("Вы изменили часть объекта!");
+        Console.WriteLine("Теперь он выглядит так:");
+        Console.WriteLine(this);
+        Console.WriteLine("Нажмите любую кнопку, чтобы продолжить: ");
+        Console.ReadLine();
+    }
+    
     public ProductAddInf(string specName, double specPrice, bool isCustom)
     {
         this.specName = specName;

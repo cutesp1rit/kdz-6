@@ -12,6 +12,7 @@ public class Product
     private bool isAvailable; 
     private string manufactureDate;
     private ProductAddInf[] specifications;
+    public event EventHandler<DataEventArgs> SomethingChanged;
 
     [JsonPropertyName("widgetId")]
     public string WidgetId 
@@ -24,35 +25,51 @@ public class Product
     public string Name
     {
         get => name;
-        set => name = value;
+        set 
+        {
+            name = value;
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }
     }
 
     [JsonPropertyName("quantity")]
     public int Quantity
     {
         get => quantity;
-        set => quantity = value;
+        set
+        {
+            quantity = value;
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }
     }
 
     [JsonPropertyName("price")]
     public double Price
     {
         get => price;
-        set => price = value;
+        init => price = value;
     }
     
     [JsonPropertyName("isAvailable")]
     public bool IsAvailable
     {
         get => isAvailable;
-        set => isAvailable = value;
+        set 
+        { 
+            isAvailable = value;
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }    
     }
 
     [JsonPropertyName("manufactureDate")]
     public string ManufactureDate
     {
         get => manufactureDate;
-        set => manufactureDate = value;
+        set
+        {
+            manufactureDate = value;
+            SomethingChanged?.Invoke(this, new DataEventArgs(DateTime.Now));
+        }
     }
     
     [JsonPropertyName("specifications")]
@@ -61,7 +78,29 @@ public class Product
         get => specifications;
         init => specifications = value;
     }
+    public virtual void ThisProductSpecificationsPriceChanged(object sender, ProductEventArgs args)
+    {
+        double newPrice = 0;
+        foreach (ProductAddInf addInf in specifications)
+        {
+            newPrice += addInf.SpecPrice;
+        }
+        price = newPrice;
+        Console.WriteLine("Вы изменили цену одной из спецификаций, поэтому общая цена тоже изменилась.");
+        Console.WriteLine($"Новая цена: {Price}. Новая цена спецификации: {args.NewPrice}");
+        Console.WriteLine("Нажмите любую кнопку, чтобы продолжить..");
+        Console.ReadLine();
+    }
 
+    public virtual void OnSomethingChanged(object sender, DataEventArgs args)
+    {
+        Console.WriteLine("Вы изменили часть объекта!");
+        Console.WriteLine("Теперь он выглядит так:");
+        Console.WriteLine(this);
+        Console.WriteLine("Нажмите любую кнопку, чтобы продолжить: ");
+        Console.ReadLine();
+    }
+    
     public Product(string widgetId, string name, int quantity, double price,
         bool isAvailable, string manufactureDate, ProductAddInf[] specifications)
     {
