@@ -49,10 +49,4 @@ public class ProductAddInf
     {
         return $"specName: {SpecName}, specPrice: {SpecPrice}, isCustom: {IsCustom}";
     }
-
-    public string ToJSON()
-    {
-        StringBuilder allObjects;
-        return "";
-    }
 }

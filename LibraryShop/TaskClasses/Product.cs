@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 namespace LibraryShop;
 
 [Serializable]
@@ -110,12 +111,26 @@ public class Product
                $"isAvailable: {IsAvailable}, ManufactureDate: {ManufactureDate}..";
     }
 
-    public string TOJSON()
+    public string ToJSON()
     {
-        return $"{{\n    \"widgetId\": \"{WidgetId}\",\n" +
+        StringBuilder stringJson = new StringBuilder($"  {{\n    \"widgetId\": \"{WidgetId}\",\n" +
                $"    \"name\": \"{Name}\",\n    \"quantity\": {Quantity},\n    \"price\": {Price},\n" +
                $"    \"isAvailable\": {IsAvailable},\n    \"manufactureDate\": \"{ManufactureDate}\",\n" +
-               $"    \"specifications\": [\n      {{\n        \"specName\": \"Dimensionality\",\n " +
-               $"       \"specPrice\": 11.18,\n        \"isCustom\": true\n      }},\n      {{\n        \"specName\": \"Weight Distribution\",\n        \"specPrice\": 23.24,\n        \"isCustom\": false\n      }}\n    ]\n  }}";
+               $"    \"specifications\": [");
+
+        for (int i = 0; i < Specifications.Length; i++)
+        {
+            stringJson.Append(
+                $"\n      {{\n        \"specName\": \"{Specifications[i].SpecName}\",\n        \"specPrice\": " +
+                $"{Specifications[i].SpecPrice},\n        \"isCustom\": {Specifications[i].IsCustom}\n      }}");
+            if (i != Specifications.Length - 1)
+            {
+                stringJson.Append(",");
+            }
+        }
+
+        stringJson.Append("\n    ]\n  }");
+
+        return stringJson.ToString();
     }
 }
