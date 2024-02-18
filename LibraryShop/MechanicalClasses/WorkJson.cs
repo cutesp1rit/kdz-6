@@ -41,11 +41,10 @@ public static class WorkJson
             foreach (var specProduct in product.Specifications)
             {
                 specProduct.SpecificationsPriceChanged += product.ThisProductSpecificationsPriceChanged;
-                specProduct.Update += specProduct.OnSomethingChanged;
+                specProduct.Update += specProduct.SomethingChanged;
                 specProduct.Update += tracking.WhenItChanged;
             }
-            
-            product.Update += product.OnSomethingChanged;
+            product.Update += product.SomethingChanged;
             product.Update += tracking.WhenItChanged;
         }
         return products;

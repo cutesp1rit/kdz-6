@@ -1,5 +1,4 @@
 using LibraryShop.StyleConsole;
-
 namespace LibraryShop.MechanicalClasses;
 
 public static class MethodsForMenuMessages
@@ -99,17 +98,13 @@ public static class MethodsForMenuMessages
             catch (ArgumentNullException exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Возникла ошибка при открытии файла, повторите попытку: ");
-            }
-            catch (IOException exception)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Введено некорректное название файла или он находится не в текущей директории, повторите попытку: ");
+                Console.WriteLine(exception.Message);
             }
             catch (Exception exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Возникла непредвиденная ошибка, повторите попытку: ");
+                Console.WriteLine("Возникла ошибка обработки файла, в нем некорректные данные, пожалуйста," +
+                                  " выберите другой путь.");
             }
             finally
             {

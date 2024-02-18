@@ -5,94 +5,98 @@ namespace LibraryShop;
 [Serializable]
 public class Product
 {
-    private string widgetId;
-    private string name;
-    private int quantity;
-    private double price;
-    private bool isAvailable; 
-    private string manufactureDate;
-    private ProductAddInf[] specifications;
+    private string _widgetId;
+    private string _name;
+    private int _quantity;
+    private double _price;
+    private bool _isAvailable; 
+    private string _manufactureDate;
+    private ProductAddInf[] _specifications;
     public event EventHandler<DataEventArgs> Update;
 
     [JsonPropertyName("widgetId")]
     public string WidgetId 
     {
-        get => widgetId;
-        init => widgetId = value;
+        get => _widgetId;
+        init => _widgetId = value ?? throw new ArgumentNullException(nameof(value),
+            "Ошибка инициализации \"widgetId\"");
     }
 
     [JsonPropertyName("name")]
     public string Name
     {
-        get => name;
+        get => _name;
         set 
         {
-            name = value;
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+            _name = value ?? throw new ArgumentNullException(nameof(value),
+                "Ошибка инициализации \"name\"");;
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }
     }
 
     [JsonPropertyName("quantity")]
     public int Quantity
     {
-        get => quantity;
+        get => _quantity;
         set
         {
-            quantity = value;
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+            _quantity = value; 
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }
     }
 
     [JsonPropertyName("price")]
     public double Price
     {
-        get => price;
-        init => price = value;
+        get => _price;
+        init => _price = value;
     }
     
     [JsonPropertyName("isAvailable")]
     public bool IsAvailable
     {
-        get => isAvailable;
+        get => _isAvailable;
         set 
-        { 
-            isAvailable = value;
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+        {
+            _isAvailable = value;
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }    
     }
 
     [JsonPropertyName("manufactureDate")]
     public string ManufactureDate
     {
-        get => manufactureDate;
+        get => _manufactureDate;
         set
         {
-            manufactureDate = value;
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+            _manufactureDate = value ?? throw new ArgumentNullException(nameof(value),
+                "Ошибка инициализации \"manufactureDate\"");;
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }
     }
     
     [JsonPropertyName("specifications")]
     public ProductAddInf[] Specifications
     {
-        get => specifications;
-        init => specifications = value;
+        get => _specifications;
+        init => _specifications = value ?? throw new ArgumentNullException(nameof(value),
+            "Ошибка инициализации \"specifications\"");
     }
     public virtual void ThisProductSpecificationsPriceChanged(object sender, ProductEventArgs args)
     {
         double newPrice = 0;
-        foreach (ProductAddInf addInf in specifications)
+        foreach (ProductAddInf addInf in _specifications)
         {
             newPrice += addInf.SpecPrice;
         }
-        price = newPrice;
+        _price = newPrice;
         Console.WriteLine("Вы изменили цену одной из спецификаций, поэтому общая цена тоже изменилась.");
         Console.WriteLine($"Новая цена: {Price}. Новая цена спецификации: {args.NewPrice}");
         Console.WriteLine("Нажмите любую кнопку, чтобы продолжить..");
         Console.ReadLine();
     }
 
-    public virtual void OnSomethingChanged(object sender, DataEventArgs args)
+    public void SomethingChanged(object sender, DataEventArgs args)
     {
         Console.WriteLine("Вы изменили часть объекта!");
         Console.WriteLine("Теперь он выглядит так:");
@@ -101,27 +105,34 @@ public class Product
         Console.ReadLine();
     }
     
+    protected virtual void OnSomethingChanged(object sender, DataEventArgs args)
+        => Update?.Invoke(sender, args);
+    
     public Product(string widgetId, string name, int quantity, double price,
         bool isAvailable, string manufactureDate, ProductAddInf[] specifications)
     {
-        this.widgetId = widgetId;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-        this.isAvailable = isAvailable;
-        this.manufactureDate = manufactureDate;
-        this.specifications = specifications;
+        _widgetId = widgetId ?? throw new ArgumentNullException(nameof(widgetId),
+            "Ошибка инициализации \"widgetId\"");
+        _name = name ?? throw new ArgumentNullException(nameof(name),
+            "Ошибка инициализации \"name\"");
+        _quantity = quantity;
+        _price = price;
+        _isAvailable = isAvailable;
+        _manufactureDate = manufactureDate ?? throw new ArgumentNullException(nameof(manufactureDate),
+            "Ошибка инициализации \"manufactureDate\"");
+        _specifications = specifications ?? throw new ArgumentNullException(nameof(specifications),
+            "Ошибка инициализации \"specifications\"");
     } 
     
     public Product()
     {
-        widgetId = "";
-        name = "";
-        quantity = 0;
-        price = 0;
-        isAvailable = false;
-        manufactureDate = "";
-        specifications = new ProductAddInf[0];
+        _widgetId = "";
+        _name = "";
+        _quantity = 0;
+        _price = 0;
+        _isAvailable = false;
+        _manufactureDate = "";
+        _specifications = new ProductAddInf[0];
     }
 
     public string WhatIsFieldString(string field)

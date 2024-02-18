@@ -7,7 +7,8 @@ public class AllProducts
 
     public AllProducts(List<Product> products)
     {
-        _products = products;
+        _products = products ?? throw new ArgumentNullException(nameof(products),
+            "Ошибка инициализации \"products\"");
     }
 
     public AllProducts()

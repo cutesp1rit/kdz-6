@@ -7,46 +7,47 @@ namespace LibraryShop;
 public class ProductAddInf
 {
     public event EventHandler<ProductEventArgs> SpecificationsPriceChanged;
-    private string specName;
-    private double specPrice;
-    private bool isCustom;
+    private string _specName;
+    private double _specPrice;
+    private bool _isCustom;
     public event EventHandler<DataEventArgs> Update;
     
     [JsonPropertyName("specName")]
     public string SpecName
     {
-        get => specName;
+        get => _specName;
         set
         {
-            specName = value;
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+            _specName = value ?? throw new ArgumentNullException(nameof(value),
+                "Ошибка инициализации \"specName\"");
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }
     }
 
     [JsonPropertyName("specPrice")]
     public double SpecPrice
     {
-        get => specPrice;
+        get => _specPrice;
         set
         {
-            specPrice = value;
-            SpecificationsPriceChanged?.Invoke(this, new ProductEventArgs(specPrice));    
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+            _specPrice = value;
+            OnSpecPriceChanged(this, new ProductEventArgs(_specPrice));    
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }
     }
     
     [JsonPropertyName("isCustom")]
     public bool IsCustom
     {
-        get => isCustom;
+        get => _isCustom;
         set
         {
-            isCustom = value;
-            Update?.Invoke(this, new DataEventArgs(DateTime.Now));
+            _isCustom = value;
+            OnSomethingChanged(this, new DataEventArgs(DateTime.Now));
         }
     }
     
-    public virtual void OnSomethingChanged(object sender, DataEventArgs args)
+    public void SomethingChanged(object sender, DataEventArgs args)
     {
         Console.WriteLine("Вы изменили часть объекта!");
         Console.WriteLine("Теперь он выглядит так:");
@@ -55,18 +56,25 @@ public class ProductAddInf
         Console.ReadLine();
     }
     
+    protected virtual void OnSomethingChanged(object sender, DataEventArgs args)
+        => Update?.Invoke(sender, args);
+    
+    protected virtual void OnSpecPriceChanged(object sender, ProductEventArgs args)
+        => SpecificationsPriceChanged?.Invoke(sender, args);
+    
     public ProductAddInf(string specName, double specPrice, bool isCustom)
     {
-        this.specName = specName;
-        this.specPrice = specPrice;
-        this.isCustom = isCustom;
+        _specName = specName ?? throw new ArgumentNullException(nameof(specName),
+            "Ошибка инициализации \"specName\"");
+        _specPrice = specPrice;
+        _isCustom = isCustom;
     }
 
     public ProductAddInf()
     {
-        specName = "";
-        specPrice = 0;
-        isCustom = false;
+        _specName = "";
+        _specPrice = 0;
+        _isCustom = false;
     }
 
     public override string ToString()
