@@ -20,6 +20,11 @@ public class AutoSaver
         _oldData = new DateTime();
     }
     
+    /// <summary>
+    /// Метод для сравнения двух дат. В случае если прошло не больше чем 15 секунд, запуск записи файла
+    /// </summary>
+    /// <param name="sender">Объкт вызывающий событие</param>
+    /// <param name="args">Новая дата</param>
     public void WhenItChanged(object sender, DataEventArgs args)
     {
         if (_oldData == new DateTime()) // если старое значение еще не задано
@@ -30,7 +35,7 @@ public class AutoSaver
 
         if ((args.DataNewChanged - _oldData).TotalSeconds <= 15)
         {
-            Console.WriteLine("Вы произвели несколько изменений не меньше чем за 15 секунд, поэтому они будут записы в файл!");
+            Console.WriteLine("Вы произвели несколько изменений не больше чем за 15 секунд, поэтому они будут записы в файл!");
             WorkJson.JsonSerialization(_products, ".\\Products_tmp.json");
         }
 

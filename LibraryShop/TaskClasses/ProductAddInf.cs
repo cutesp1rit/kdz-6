@@ -6,11 +6,11 @@ namespace LibraryShop;
 [Serializable]
 public class ProductAddInf
 {
-    public event EventHandler<ProductEventArgs> SpecificationsPriceChanged;
     private string _specName;
     private double _specPrice;
     private bool _isCustom;
     public event EventHandler<DataEventArgs> Update;
+    public event EventHandler<ProductEventArgs> SpecificationsPriceChanged;
     
     [JsonPropertyName("specName")]
     public string SpecName
@@ -47,6 +47,11 @@ public class ProductAddInf
         }
     }
     
+    /// <summary>
+    /// Метод для подписи на событие, срабатывающее в случае изменения чего-либо
+    /// </summary>
+    /// <param name="sender">Объект, который запустил событие</param>
+    /// <param name="args">Объект с датой произошедшего</param>
     public void SomethingChanged(object sender, DataEventArgs args)
     {
         Console.WriteLine("Вы изменили часть объекта!");
@@ -56,9 +61,19 @@ public class ProductAddInf
         Console.ReadLine();
     }
     
+    /// <summary>
+    /// Метод для вызова события
+    /// </summary>
+    /// <param name="sender">Объект, который вызвал событие</param>
+    /// <param name="args">Объект с датой произошедшего</param>
     protected virtual void OnSomethingChanged(object sender, DataEventArgs args)
         => Update?.Invoke(sender, args);
     
+    /// <summary>
+    /// Метод для вызова события
+    /// </summary>
+    /// <param name="sender">Объект, который вызвал событие</param>
+    /// <param name="args">Объект с измененной ценой</param>
     protected virtual void OnSpecPriceChanged(object sender, ProductEventArgs args)
         => SpecificationsPriceChanged?.Invoke(sender, args);
     
@@ -77,6 +92,10 @@ public class ProductAddInf
         _isCustom = false;
     }
 
+    /// <summary>
+    /// Переопределенный метод ToString
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return $"specName: {SpecName}, specPrice: {SpecPrice}, isCustom: {IsCustom}";

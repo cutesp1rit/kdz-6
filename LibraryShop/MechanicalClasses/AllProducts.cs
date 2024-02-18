@@ -1,8 +1,9 @@
 namespace LibraryShop.MechanicalClasses;
 
-// Класс для реализации методов сортировки и прочих методов по заданию
+// Класс для реализации методов сортировки и прочих методов
 public class AllProducts
 {
+    // Поле содержащее в себе коллекцию объектов
     private List<Product> _products;
 
     public AllProducts(List<Product> products)
@@ -21,6 +22,10 @@ public class AllProducts
         get => _products;
     }
 
+    /// <summary>
+    /// Метод сортировки полей с типом данных string
+    /// </summary>
+    /// <param name="field">имя поля</param>
     public void SortForString(string field)
     {
         for (int i = Products.Count - 1; i > 0; i--)
@@ -35,7 +40,10 @@ public class AllProducts
             }
         }
     }
-
+    
+    /// <summary>
+    /// Метод сортировки данных по полю quantity (единственный тип данных int)
+    /// </summary>
     public void SortForQuantity()
     {
         for (int i = Products.Count - 1; i > 0; i--)
@@ -50,6 +58,9 @@ public class AllProducts
         }
     }
     
+    /// <summary>
+    /// Метод сортировки данных по полю price (единственный тип данных double)
+    /// </summary>
     public void SortForPrice()
     {
         for (int i = Products.Count - 1; i > 0; i--)
@@ -64,6 +75,9 @@ public class AllProducts
         }    
     }
 
+    /// <summary>
+    /// Метод сортировки данных по полю isAvailable (единственный тип данных bool)
+    /// </summary>
     public void SortForIsAvailable()
     {
         // Сортировка происходит по принципу сначала все false, потом все true

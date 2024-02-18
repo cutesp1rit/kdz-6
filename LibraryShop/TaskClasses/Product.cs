@@ -82,6 +82,12 @@ public class Product
         init => _specifications = value ?? throw new ArgumentNullException(nameof(value),
             "Ошибка инициализации \"specifications\"");
     }
+    
+    /// <summary>
+    /// Метод для подписи на событие, срабатывающее в случае изменения цены
+    /// </summary>
+    /// <param name="sender">Объект, который запустил событие</param>
+    /// <param name="args">Объект с измененной ценой</param>
     public virtual void ThisProductSpecificationsPriceChanged(object sender, ProductEventArgs args)
     {
         double newPrice = 0;
@@ -89,13 +95,18 @@ public class Product
         {
             newPrice += addInf.SpecPrice;
         }
-        _price = newPrice;
+        _price = newPrice; // изменение цены
         Console.WriteLine("Вы изменили цену одной из спецификаций, поэтому общая цена тоже изменилась.");
         Console.WriteLine($"Новая цена: {Price}. Новая цена спецификации: {args.NewPrice}");
         Console.WriteLine("Нажмите любую кнопку, чтобы продолжить..");
         Console.ReadLine();
     }
 
+    /// <summary>
+    /// Метод для подписи на событие, срабатывающее в случае изменения чего-либо
+    /// </summary>
+    /// <param name="sender">Объект, который запустил событие</param>
+    /// <param name="args">Объект с датой произошедшего</param>
     public void SomethingChanged(object sender, DataEventArgs args)
     {
         Console.WriteLine("Вы изменили часть объекта!");
@@ -105,6 +116,11 @@ public class Product
         Console.ReadLine();
     }
     
+    /// <summary>
+    /// Метод для вызова события
+    /// </summary>
+    /// <param name="sender">Объект, который вызвал событие</param>
+    /// <param name="args">Объект с датой произошедшего</param>
     protected virtual void OnSomethingChanged(object sender, DataEventArgs args)
         => Update?.Invoke(sender, args);
     
@@ -135,6 +151,12 @@ public class Product
         _specifications = new ProductAddInf[0];
     }
 
+    
+    /// <summary>
+    /// Метод для вызова и возврата свойства соответствующему полю
+    /// </summary>
+    /// <param name="field">Название поля</param>
+    /// <returns></returns>
     public string WhatIsFieldString(string field)
     {
         if (field == "widgetId")
@@ -155,12 +177,20 @@ public class Product
         return "";
     }
 
+    /// <summary>
+    /// Переопределенный метод ToString()
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return $"widgetId: {WidgetId}, name: {Name}, quantity: {Quantity}, price: {Price}, " +
                $"isAvailable: {IsAvailable}, ManufactureDate: {ManufactureDate}..";
     }
 
+    /// <summary>
+    /// Метод для преобразования объекта в структуру json
+    /// </summary>
+    /// <returns></returns>
     public string ToJSON()
     {
         StringBuilder stringJson = new StringBuilder($"  {{\n    \"widgetId\": \"{WidgetId}\",\n" +

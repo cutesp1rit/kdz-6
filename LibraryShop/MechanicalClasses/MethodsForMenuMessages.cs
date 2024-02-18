@@ -3,6 +3,10 @@ namespace LibraryShop.MechanicalClasses;
 
 public static class MethodsForMenuMessages
 {
+    /// <summary>
+    /// Метод получения НЕ null и НЕ пустой строки
+    /// </summary>
+    /// <returns>Нужная строка</returns>
     public static string GetNotEmptyString()
     {
         string newString = Console.ReadLine();
@@ -13,10 +17,11 @@ public static class MethodsForMenuMessages
         }
         return newString;
     }
+    
     /// <summary>
     /// Метод для получения неотрицательного целого значения
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Нужное число</returns>
     public static int GetPosInt()
     {
         int newInt;
@@ -26,10 +31,11 @@ public static class MethodsForMenuMessages
         }
         return newInt;
     }
+    
     /// <summary>
     /// Метод для получения неотрицательного числа типа double
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Нужное число</returns>
     public static double GetPosDouble()
     {
         double newDouble;
@@ -40,6 +46,10 @@ public static class MethodsForMenuMessages
         return newDouble;
     }
     
+    /// <summary>
+    /// Метод получения bool значения
+    /// </summary>
+    /// <returns>Нужное bool значение</returns>
     public static bool GetBoolValue()
     {
         string newBool = Console.ReadLine();
@@ -55,6 +65,10 @@ public static class MethodsForMenuMessages
         return false;
     }
     
+    /// <summary>
+    /// Получение пути и запись/получение данных по этому пути
+    /// </summary>
+    /// <param name="products">Объект с данными из json</param>
     public static void GettingPath(ref AllProducts products)
     {
         bool flagPath = true;
@@ -65,9 +79,9 @@ public static class MethodsForMenuMessages
             Menu switchMethod = new Menu(new[]
                 {
                     "\t1. Получить данные по этому пути", 
-                    "\t2. Записать текущие данные в файл"
+                    "\t2. Записать текущие данные в файл по этому пути"
                 },
-                "Чтобы вы хотели использовать файл?");
+                "Как бы вы хотели использовать путь?");
             try
             {
                 switch (switchMethod.ShowMenu())
@@ -76,7 +90,7 @@ public static class MethodsForMenuMessages
                         products = new AllProducts(WorkJson.JsonDeserialization(path));
                         break;
                     case 2:
-                        if (products == null || products.Products.Count == 0)
+                        if (products == null || products.Products.Count == 0) // в случае если данных еще нет
                         {
                             Console.WriteLine("Объекты еще не заданы, поэтому заново введите путь к файлу и" +
                                               " выберите первый пункт для их получения.");
@@ -113,6 +127,10 @@ public static class MethodsForMenuMessages
         } while (flagPath);
     }
 
+    /// <summary>
+    /// Выбор поля для сортировки и запуск методов
+    /// </summary>
+    /// <param name="products">Объект с данными из json</param>
     public static void PreparationForSorting(ref AllProducts products)
     {
         Menu switchMethod = new Menu(new[]
@@ -146,6 +164,10 @@ public static class MethodsForMenuMessages
         PrintProducts(products);
     }
 
+    /// <summary>
+    /// Метод для вывода объектов на экран
+    /// </summary>
+    /// <param name="products">Объект с данными из json</param>
     public static void PrintProducts(AllProducts products)
     {
         foreach (Product product in products.Products)
@@ -155,20 +177,29 @@ public static class MethodsForMenuMessages
         Console.WriteLine("Для возвращения к меню нажмите любую кнопку.");
         Console.ReadLine();
     }
+    
+    /// <summary>
+    /// Метод для изменения данных полей
+    /// </summary>
+    /// <param name="products">Объект с данными из json</param>
     public static void PreparationForChanges(ref AllProducts products)
     {
+        // Создаем массив объектов в string формате
         string[] arrayObjectForSwitch = new string[products.Products.Count];
         for (int i = 0; i < products.Products.Count; i++)
         {
             arrayObjectForSwitch[i] = $"\t{i + 1}. " + products.Products[i];
         }
+        // Передаем в меню, чтобы пользователь выбрал нужный
         Menu switchMethod = new Menu(arrayObjectForSwitch, "Какой объект вы бы хотели отредактировать?");
         int indexOfObject = switchMethod.ShowMenu() - 1;
+        // Даем пользователю выбрать поле
         Menu switchMethod2 = new Menu(new[]
             {
                 "\t1. name", "\t2. quantity", 
                 "\t3. isAvailable", "\t4. manufactureDate", "\t5. specifications"
             }, "Какое поле вы бы хотели изменить?");
+        // Меняем в соответствии с выбором нужное поле
         switch (switchMethod2.ShowMenu())
         {
             case 1:
@@ -188,6 +219,7 @@ public static class MethodsForMenuMessages
                 products.Products[indexOfObject].ManufactureDate = GetNotEmptyString();
                 break;
             case 5:
+                // Если выбрали поле с вложенными объектами, то повторяем процедуру
                 Product thisProduct = products.Products[indexOfObject];
                 ChangeAddInf(ref thisProduct);
                 products.Products[indexOfObject] = thisProduct;
@@ -195,22 +227,30 @@ public static class MethodsForMenuMessages
         }
     }
 
+    /// <summary>
+    /// Метод схожий предыдущему, но для изменения объекта класса ProductAddInf
+    /// </summary>
+    /// <param name="product">Объект, с которым производятся манипуляции</param>
     public static void ChangeAddInf(ref Product product)
     {
         Console.WriteLine("Это массив вложенных объектов, поэтому вам нужно будет еще раз выбрать объект и поле:");
         Console.WriteLine("Нажмите любую кнопку, чтобы продолжить..");
         Console.ReadLine();
+        // Создаем массив объектов в string формате
         string[] arrayObjectForSwitch = new string[product.Specifications.Length];
         for (int i = 0; i < product.Specifications.Length; i++)
         {
             arrayObjectForSwitch[i] = $"\t{i + 1}. " + product.Specifications[i];
         }
+        // Передаем в меню, чтобы пользователь выбрал нужный
         Menu switchMethod = new Menu(arrayObjectForSwitch, "Какой объект вы бы хотели отредактировать?");
         int indexOfObject = switchMethod.ShowMenu() - 1;
+        // Даем пользователю выбрать поле
         Menu switchMethod2 = new Menu(new[]
         {
             "\t6.1 specifications: specName", "\t6.2. specifications: specPrice", "\t6.3. specifications: isCustom"
         }, "Какое поле вы бы хотели изменить?");
+        // Меняем в соответствии с выбором нужное поле
         switch (switchMethod2.ShowMenu())
         {
             case 1:

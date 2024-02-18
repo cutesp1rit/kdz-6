@@ -4,6 +4,12 @@ namespace LibraryShop.MechanicalClasses;
 
 public static class WorkJson
 {
+    /// <summary>
+    /// Метод для Десериализации данных
+    /// </summary>
+    /// <param name="path">путь к файлу json</param>
+    /// <returns></returns>
+    /// <exception cref="FormatException">Ошибка в случае некорректных данных</exception>
     public static List<Product> JsonDeserialization(string path)
     {
         // Альтернативное решение через контракты данных
@@ -25,9 +31,9 @@ public static class WorkJson
         return products; */ 
         
         if (!File.Exists(path)) throw new FormatException("Ошибка! Файла по этому пути не существует.");
-        string JsonFileInString = File.ReadAllText(path);
-        List<Product> products = JsonSerializer.Deserialize<List<Product>>(JsonFileInString);
-        if (products == null || products.Count == 0)
+        string jsonFileInString = File.ReadAllText(path); // считываем все в одну строку
+        List<Product> products = JsonSerializer.Deserialize<List<Product>>(jsonFileInString);
+        if (products == null || products.Count == 0) // если файл пуст
         {
             throw new FormatException("Ошибка! Файл пуст!");
         }
@@ -35,7 +41,7 @@ public static class WorkJson
         AutoSaver tracking = new AutoSaver(products);
         
         // теперь нужно подписать методы на события, чтобы при изменении цены спецификации
-        // срабатывало событие.. и события-изменение тоже
+        // срабатывало событие.. и события-изменение тоже нужно подписать
         foreach (Product product in products)
         {
             foreach (var specProduct in product.Specifications)
@@ -50,6 +56,11 @@ public static class WorkJson
         return products;
     }
 
+    /// <summary>
+    /// Метод для сериализации данных 
+    /// </summary>
+    /// <param name="products">Список объектов из json</param>
+    /// <param name="path">Путь для записи</param>
     public static void JsonSerialization(List<Product> products, string path)
     {
         string jsonString = JsonSerializer.Serialize<List<Product>>(products);
